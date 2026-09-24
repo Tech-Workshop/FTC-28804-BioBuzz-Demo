@@ -126,10 +126,16 @@ public class Demo extends LinearOpMode {
 			rightBackDrive.setPower(backRightPower);
 			*/
 
+			//Check for low-speed mode
+			double SPEED_MULTIPLIER = 1.0;
+			if (gamepad1.left_bumper) {
+				SPEED_MULTIPLIER = 0.3;
+			}
+
 			DrivePowers powers = ManualDrive.fieldCentric(
-				gamepad1.left_stick_y,
-				gamepad1.left_stick_x,
-				-gamepad1.right_stick_x,
+				gamepad1.left_stick_y*Constants.General.CONTROLLER_DRIVE_MULTIPLIER*SPEED_MULTIPLIER, //Default is (-)
+				gamepad1.left_stick_x*Constants.General.CONTROLLER_DRIVE_MULTIPLIER*SPEED_MULTIPLIER,
+				-gamepad1.right_stick_x*Constants.General.CONTROLLER_TURN_MULTIPLIER,	//Default is (+)
 				follower.pose().heading()
 			);
 
@@ -199,12 +205,12 @@ public class Demo extends LinearOpMode {
 			ManualDrive.driveOrHold(follower, powers); //Keeps robot in position when sticks are released
 			//follower.manual(powers); //Old method for applying power (does not lock when sticks released)
 			follower.update();
-
+*/
 			//Display pose to screen
+
 			telemetry.addData("Robot X", follower.pose().x());
 			telemetry.addData("Robot Y", follower.pose().y());
-			telemetry.addData("Robot Heading", Math.toDegrees(headingCurrent));
-*/
+			telemetry.addData("Robot Heading", Math.toDegrees(follower.pose().heading()));
 
 			//------------------------------------------
 			//SHOOTER
@@ -213,7 +219,7 @@ public class Demo extends LinearOpMode {
 					shooterDelay.reset();
 				}
 
-				shooter.setPower(1.0);
+				shooter.setPower(0.7);
 
 				if(shooterDelay.seconds()>1.0) {
 					ballStop.setPosition(Constants.Shooter.BALL_STOP_UP);

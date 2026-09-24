@@ -30,7 +30,7 @@ public class Constants {
         c.frontRightName.set("drive_right_front");
         c.backLeftName.set("drive_left_back");
         c.backRightName.set("drive_right_back");
-        c.frontLeftDirection.set(DcMotorSimple.Direction.FORWARD);
+        c.frontLeftDirection.set(DcMotorSimple.Direction.REVERSE);
         c.frontRightDirection.set(DcMotorSimple.Direction.FORWARD);
         c.backLeftDirection.set(DcMotorSimple.Direction.REVERSE);
         c.backRightDirection.set(DcMotorSimple.Direction.FORWARD);
@@ -39,15 +39,15 @@ public class Constants {
     public static PinpointConfig localizerConfig = new PinpointConfig(c -> {
         c.name.set("pinpoint");
         c.podType.set(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
-        c.xPodOffset.set(7.15947188730315);
-        c.yPodOffset.set(-3.105287927342212);
-        c.xPodDirection.set(GoBildaPinpointDriver.EncoderDirection.FORWARD);
-        c.yPodDirection.set(GoBildaPinpointDriver.EncoderDirection.FORWARD);
+        c.xPodOffset.set(-7.163);
+        c.yPodOffset.set(2.815);
+        c.xPodDirection.set(GoBildaPinpointDriver.EncoderDirection.REVERSED); //Tuner said FORWARD
+        c.yPodDirection.set(GoBildaPinpointDriver.EncoderDirection.REVERSED); //Tuner said REVERSE
         c.globalDistanceUnit.set(DistanceUnit.INCH);
         c.offsetUnits.set(DistanceUnit.INCH);
     });
 
-    public static ForesightConfig foresightConfig = new ForesightConfig(
+   public static ForesightConfig foresightConfig = new ForesightConfig(
        c -> {
            Controller primaryTranslationalForward = Controller.proportional(0.21710396957886316);
            Controller secondaryTranslationalForward = Controller.proportional(0.08021411563448194);

@@ -16,6 +16,8 @@ public class Constants {
 		public static final double CONTROLLER_DEADBAND=0.05;
 		public static final boolean CONTROLLER_AUTO_HEADING=true;
 		public static final double CONTROLLER_AUTO_ERROR=Math.PI/12;  //Allowed error before auto correct
+		public static final double CONTROLLER_DRIVE_MULTIPLIER=0.7;
+		public static final double CONTROLLER_TURN_MULTIPLIER=0.5;
 	}
 
 	/*
