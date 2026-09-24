@@ -10,8 +10,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Constants;
 
-@TeleOp(group = "DEMO",name="Demo")
-
+@TeleOp(group = "DEMO",name="Demo (v2)")
 public class Demo extends LinearOpMode {
 	private DcMotorEx leftFrontDrive,leftBackDrive,rightFrontDrive,rightBackDrive,intake,shooter;
 	private Servo intakeRetractorLeft,intakeRetractorRight,ballStop;
