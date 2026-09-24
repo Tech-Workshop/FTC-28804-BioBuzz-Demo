@@ -81,16 +81,9 @@ public class Constants {
 		public static final String SHOOTER_ID = "shooter";
 		public static final DcMotorSimple.Direction SHOOTER_DIRECTION = DcMotorSimple.Direction.REVERSE;
 
-		public static final String SHOOTER_ANGLE_ID = "shooter_angle"; //Axon Max
-		public static final double SHOOTER_ANGLE_DOWN=0.68; //Minimum down position
-		public static final double SHOOTER_ANGLE_UP=0.14; //Maximum up position
-		public static final double SHOOTER_ANGLE_SHOOT=0.16; //Default shoot position
-
-		public static final String SHOOTER_EXTENDER_ID = "shooter_extender";
-		public static final DcMotorSimple.Direction SHOOTER_EXTENDER_DIRECTION = DcMotorSimple.Direction.FORWARD;
-
-		public static final int SHOOTER_EXTENDER_IN=0;
-		public static final int SHOOTER_EXTENDER_OUT=-2600;
+		public static final String BALL_STOP_ID = "shooter_angle"; //Axon Max
+		public static final double BALL_STOP_DOWN=0.68; //Minimum down position
+		public static final double BALL_STOP_UP=0.14; //Maximum up position
 	}
 
 	/*

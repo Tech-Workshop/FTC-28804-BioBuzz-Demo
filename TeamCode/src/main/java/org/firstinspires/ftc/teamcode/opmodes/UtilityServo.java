@@ -9,16 +9,16 @@ import org.firstinspires.ftc.teamcode.Constants;
 
 @TeleOp(group = "UTILITY",name="Utility: Servo Reset/Tuning")
 public class UtilityServo extends LinearOpMode {
-	private Servo intakeRetractorLeft,intakeRetractorRight,shooterAngle;
+	private Servo intakeRetractorLeft,intakeRetractorRight,ballStop;
 	private CRServo indexerLeft,indexerRight;
 
 	double intakeRetractorDiff=0.0;
-	double shooterAnglePos=0.50;
+	double ballStopPos=0.50;
 	double indexerPower=0.50;
 
 	@Override
 	public void runOpMode() throws InterruptedException {
-		shooterAngle = hardwareMap.get(Servo.class, Constants.Shooter.SHOOTER_ANGLE_ID);
+		ballStop = hardwareMap.get(Servo.class, Constants.Shooter.BALL_STOP_ID);
 		intakeRetractorLeft = hardwareMap.get(Servo.class, Constants.Intake.INTAKE_RETRACTOR_LEFT);
 		intakeRetractorRight = hardwareMap.get(Servo.class, Constants.Intake.INTAKE_RETRACTOR_RIGHT);
 
@@ -29,22 +29,22 @@ public class UtilityServo extends LinearOpMode {
 
 		while (opModeIsActive() && !isStopRequested()) {
 
-			if(gamepad1.a) { shooterAngle.setPosition(0.50); }
+			if(gamepad1.a) { ballStop.setPosition(0.50); }
 			if(gamepad1.b) {
 				intakeRetractorLeft.setPosition(0.50);
 				intakeRetractorRight.setPosition(0.50);
 			}
 
-			//Shooter Angle - Tuning
+			//Ball Stop - Tuning
 			if (gamepad1.dpad_up) {
-				if (shooterAnglePos < 1.0) {
-					shooterAnglePos+=0.001;
-					shooterAngle.setPosition(shooterAnglePos);
+				if (ballStopPos < 1.0) {
+					ballStopPos+=0.001;
+					ballStop.setPosition(ballStopPos);
 				}
 			} else if (gamepad1.dpad_down) {
-				if (shooterAnglePos > 0.0) {
-					shooterAnglePos-=0.001;
-					shooterAngle.setPosition(shooterAnglePos);
+				if (ballStopPos > 0.0) {
+					ballStopPos-=0.001;
+					ballStop.setPosition(ballStopPos);
 				}
 			}
 
@@ -77,9 +77,9 @@ public class UtilityServo extends LinearOpMode {
 				indexerRight.setPower(0.0);
 			}
 
-			telemetry.addLine("Shooter Angle (Reset 50%) - Press A");
-			telemetry.addLine("Shooter Angle (Tuning) - D-Pad Up/Down");
-			telemetry.addData("Shooter Angle (Pos):",shooterAngle.getPosition());
+			telemetry.addLine("Ball Stop (Reset 50%) - Press A");
+			telemetry.addLine("Ball Stop (Tuning) - D-Pad Up/Down");
+			telemetry.addData("Ball Stop (Pos):",ballStop.getPosition());
 
 			telemetry.addLine("Intake Retractors (Reset-50%) - Press B");
 			telemetry.addLine("Intake Retractors (Tuning) - D-Pad Left/Right");

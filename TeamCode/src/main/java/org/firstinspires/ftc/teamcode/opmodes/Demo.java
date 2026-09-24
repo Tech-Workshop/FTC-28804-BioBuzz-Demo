@@ -13,13 +13,10 @@ import org.firstinspires.ftc.teamcode.Constants;
 @TeleOp(group = "DEMO",name="Demo")
 
 public class Demo extends LinearOpMode {
-	private DcMotorEx leftFrontDrive,leftBackDrive,rightFrontDrive,rightBackDrive,intake,shooter,shooterExtender;
-	private Servo intakeRetractorLeft,intakeRetractorRight,shooterAngle;
+	private DcMotorEx leftFrontDrive,leftBackDrive,rightFrontDrive,rightBackDrive,intake,shooter;
+	private Servo intakeRetractorLeft,intakeRetractorRight,ballStop;
 	private CRServo indexerLeft,indexerRight;
 
-	private double shooterAnglePos=0.50;
-	private int shooterExtensionPos=0;
-	private boolean shooterExtenderMoving=false;
 	private ElapsedTime shooterDelay= new ElapsedTime();
 
 	@Override
@@ -50,14 +47,8 @@ public class Demo extends LinearOpMode {
 		shooter.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 		shooter.setDirection(Constants.Shooter.SHOOTER_DIRECTION);
 
-		//Shooter extender motor
-		shooterExtender = hardwareMap.get(DcMotorEx.class, Constants.Shooter.SHOOTER_EXTENDER_ID);
-		shooterExtender.setDirection(Constants.Shooter.SHOOTER_EXTENDER_DIRECTION);
-		shooterExtender.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-		shooterExtender.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-		//Shooter angle servo
-		shooterAngle = hardwareMap.get(Servo.class, Constants.Shooter.SHOOTER_ANGLE_ID);
+		//Ball stop servo
+		ballStop = hardwareMap.get(Servo.class, Constants.Shooter.BALL_STOP_ID);
 
 		//Intake retraction servos
 		intakeRetractorLeft = hardwareMap.get(Servo.class, Constants.Intake.INTAKE_RETRACTOR_LEFT);
@@ -112,44 +103,6 @@ public class Demo extends LinearOpMode {
 			rightBackDrive.setPower(backRightPower);
 
 			//------------------------------------------
-			//SHOOTER (Angle)
-
-			if(gamepad1.dpad_up || gamepad1.dpad_down) {
-				if (gamepad1.dpad_left && shooterAnglePos<Constants.Shooter.SHOOTER_ANGLE_DOWN) {
-					shooterAnglePos += 0.005;
-				} else if (gamepad1.dpad_right && shooterAnglePos>Constants.Shooter.SHOOTER_ANGLE_UP) {
-					shooterAnglePos -= 0.005;
-				}
-
-				shooterAngle.setPosition(shooterAnglePos);
-			}
-
-			telemetry.addLine("Shooter angle: "+shooterAnglePos);
-
-			//------------------------------------------
-			//SHOOTER (Extension)
-
-			if(gamepad1.dpad_left || gamepad1.dpad_right) {
-				if (gamepad1.dpad_left && shooterExtensionPos>Constants.Shooter.SHOOTER_EXTENDER_OUT) {
-					shooterExtensionPos -= 5;
-				} else if (gamepad1.dpad_right && shooterExtensionPos<Constants.Shooter.SHOOTER_EXTENDER_IN) {
-					shooterExtensionPos += 5;
-				}
-
-				shooterExtender.setTargetPosition(shooterExtensionPos);
-				shooterExtender.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-				shooterExtender.setPower(0.5);
-				shooterExtenderMoving=true;
-				telemetry.addLine("SHOOTER EXTENSION PRESSED");
-			} else if(shooterExtenderMoving && !shooterExtender.isBusy()) {
-				shooterExtender.setPower(0.0);
-				shooterExtenderMoving=false;
-			}
-
-			telemetry.addLine("Shooter extension (actual): "+shooterExtender.getCurrentPosition());
-			telemetry.addLine("Shooter extension: "+shooterExtensionPos);
-
-			//------------------------------------------
 			//SHOOTER
 			if(gamepad1.right_trigger>0.05) {
 				if(shooter.getPower()==0.0) {
@@ -159,11 +112,13 @@ public class Demo extends LinearOpMode {
 				shooter.setPower(1.0);
 
 				if(shooterDelay.seconds()>1.0) {
+					ballStop.setPosition(Constants.Shooter.BALL_STOP_UP);
 					indexerLeft.setPower(1.0);
 					indexerRight.setPower(-1.0);
 				}
 			} else {
 				shooter.setPower(0.0);
+				ballStop.setPosition(Constants.Shooter.BALL_STOP_DOWN);
 				indexerLeft.setPower(0.0);
 				indexerRight.setPower(0.0);
 			}
@@ -195,7 +150,7 @@ public class Demo extends LinearOpMode {
 	}
 
 	public void initializeServos() {
-		shooterAngle.setPosition(Constants.Shooter.SHOOTER_ANGLE_SHOOT);
+		ballStop.setPosition(Constants.Shooter.BALL_STOP_DOWN);
 		intakeRetractorLeft.setPosition(Constants.Intake.INTAKE_RETRACTOR_RETRACTED_POS);
 		intakeRetractorRight.setPosition(Constants.Intake.INTAKE_RETRACTOR_RETRACTED_POS);
 	}
