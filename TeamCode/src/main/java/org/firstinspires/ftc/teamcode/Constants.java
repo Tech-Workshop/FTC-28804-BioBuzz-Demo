@@ -14,6 +14,8 @@ public class Constants {
 
 		//Controller
 		public static final double CONTROLLER_DEADBAND=0.05;
+		public static final boolean CONTROLLER_AUTO_HEADING=true;
+		public static final double CONTROLLER_AUTO_ERROR=Math.PI/12;  //Allowed error before auto correct
 	}
 
 	/*
@@ -70,8 +72,8 @@ public class Constants {
 		public static final String INTAKE_RETRACTOR_LEFT = "intake_retractor_left"; //Axon Max
 		public static final String INTAKE_RETRACTOR_RIGHT = "intake_retractor_right"; //Axon Max
 
-		public static final double INTAKE_RETRACTOR_RETRACTED_POS=0.24;
-		public static final double INTAKE_RETRACTOR_EXTENDED_POS=0.64;
+		public static final double INTAKE_RETRACTOR_RETRACTED_POS=0.20;
+		public static final double INTAKE_RETRACTOR_EXTENDED_POS=0.55;
 	}
 
 	/*
