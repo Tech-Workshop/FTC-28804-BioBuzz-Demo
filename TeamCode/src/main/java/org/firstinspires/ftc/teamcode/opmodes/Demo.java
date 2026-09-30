@@ -18,7 +18,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.utility.MathUtility;
 
-@TeleOp(group = "DEMO",name="Demo (v2)")
+@TeleOp(group = "DEMO",name="Demo")
 public class Demo extends LinearOpMode {
 	private Follower follower;
 	private DcMotorEx leftFrontDrive,leftBackDrive,rightFrontDrive,rightBackDrive,intake,shooter;
@@ -73,8 +73,10 @@ public class Demo extends LinearOpMode {
 		ballStop = hardwareMap.get(Servo.class, Constants.Shooter.BALL_STOP_ID);
 
 		//Intake retraction servos
+		/*
 		intakeRetractorLeft = hardwareMap.get(Servo.class, Constants.Intake.INTAKE_RETRACTOR_LEFT);
 		intakeRetractorRight = hardwareMap.get(Servo.class, Constants.Intake.INTAKE_RETRACTOR_RIGHT);
+		*/
 
 		//Indexing servos
 		indexerLeft = hardwareMap.get(CRServo.class, Constants.Indexer.INDEXER_LEFT_ID);
@@ -219,24 +221,32 @@ public class Demo extends LinearOpMode {
 					shooterDelay.reset();
 				}
 
-				shooter.setPower(0.7);
+				shooter.setPower(0.875);
+				telemetry.addData("Shooter (CPS)",shooter.getVelocity());
+				telemetry.addData("Shooter (RPM)",getShooterRPM());
+
+				//TODO: Calculate shooter power using PID (replacing above)
+				/*
+				double shooterPower=clamp(shooterPIDCalculate(getShooterRPM(),2000));
+				shooter.setPower(shooterPower);
+				*/
 
 				if(shooterDelay.seconds()>1.0) {
 					ballStop.setPosition(Constants.Shooter.BALL_STOP_UP);
-					indexerLeft.setPower(1.0);
-					indexerRight.setPower(-1.0);
+					//indexerLeft.setPower(1.0);
+					//indexerRight.setPower(-1.0);
 				}
 			} else {
 				shooter.setPower(0.0);
 				ballStop.setPosition(Constants.Shooter.BALL_STOP_DOWN);
-				indexerLeft.setPower(0.0);
-				indexerRight.setPower(0.0);
+				//indexerLeft.setPower(0.0);
+				//indexerRight.setPower(0.0);
 			}
 
 			//------------------------------------------
 			//INTAKE
 			if(gamepad1.left_trigger>0.05) {
-				intake.setPower(-0.80);
+				intake.setPower(-0.70);
 			} else {
 				intake.setPower(0.0);
 			}
@@ -244,6 +254,7 @@ public class Demo extends LinearOpMode {
 			//------------------------------------------
 			//INTAKE RETRACTION
 
+			/*
 			//Extend intake subassembly
 			if(gamepad1.a) {
 				intakeRetractorLeft.setPosition(Constants.Intake.INTAKE_RETRACTOR_EXTENDED_POS);
@@ -254,6 +265,7 @@ public class Demo extends LinearOpMode {
 				intakeRetractorLeft.setPosition(Constants.Intake.INTAKE_RETRACTOR_RETRACTED_POS);
 				intakeRetractorRight.setPosition(Constants.Intake.INTAKE_RETRACTOR_RETRACTED_POS);
 			}
+*/
 
 			telemetry.update();
 		}
@@ -261,8 +273,19 @@ public class Demo extends LinearOpMode {
 
 	public void initializeServos() {
 		ballStop.setPosition(Constants.Shooter.BALL_STOP_DOWN);
-		intakeRetractorLeft.setPosition(Constants.Intake.INTAKE_RETRACTOR_RETRACTED_POS);
-		intakeRetractorRight.setPosition(Constants.Intake.INTAKE_RETRACTOR_RETRACTED_POS);
+		//intakeRetractorLeft.setPosition(Constants.Intake.INTAKE_RETRACTOR_RETRACTED_POS);
+		//intakeRetractorRight.setPosition(Constants.Intake.INTAKE_RETRACTOR_RETRACTED_POS);
+	}
+
+	public double getShooterRPM() {
+		return shooter.getVelocity()/Constants.Shooter.SHOOTER_ENCODER_CPM*60.0;
+	}
+
+	public double shooterPIDCalculate(double currentRPM,double goalRPM) {
+		double feedForward=(Constants.Shooter.SHOOTER_PID_kV*goalRPM)+Constants.Shooter.SHOOTER_PID_kS;
+		double error=goalRPM-currentRPM;
+
+		return (error*Constants.Shooter.SHOOTER_PID_kP)+feedForward;
 	}
 }
 

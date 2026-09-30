@@ -38,7 +38,7 @@ public class AutoDemo extends OpMode {
 	}
 
 	public Path path2() {
-		return line(path1, point2).linear(path1, point2);
+		return line(path1, point2).linear(path1, point2).with(Constants.foresightConfig.maxPathSpeed.at(0.5));
 	}
 
 	public Path path3() {

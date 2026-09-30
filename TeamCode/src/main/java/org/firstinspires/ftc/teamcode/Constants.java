@@ -16,8 +16,8 @@ public class Constants {
 		public static final double CONTROLLER_DEADBAND=0.05;
 		public static final boolean CONTROLLER_AUTO_HEADING=true;
 		public static final double CONTROLLER_AUTO_ERROR=Math.PI/12;  //Allowed error before auto correct
-		public static final double CONTROLLER_DRIVE_MULTIPLIER=0.7;
-		public static final double CONTROLLER_TURN_MULTIPLIER=0.5;
+		public static final double CONTROLLER_DRIVE_MULTIPLIER=0.5;
+		public static final double CONTROLLER_TURN_MULTIPLIER=0.3;
 	}
 
 	/*
@@ -84,6 +84,9 @@ public class Constants {
 	public static final class Shooter {
 		public static final String SHOOTER_ID = "shooter";
 		public static final DcMotorSimple.Direction SHOOTER_DIRECTION = DcMotorSimple.Direction.REVERSE;
+
+		public static final double SHOOTER_PID_kS=0.16,SHOOTER_PID_kV=0.000488,SHOOTER_PID_kP=0.0009;
+		public static final double SHOOTER_ENCODER_CPM=28.0;
 
 		public static final String BALL_STOP_ID = "ball_stop"; //Axon Max
 		public static final double BALL_STOP_DOWN=0.48; //Minimum down position
